@@ -1,6 +1,6 @@
 Name: cyrus-imapd
 Version: 2.3.16
-Release: 13%{?dist}
+Release: 15%{?dist}
 
 %define ssl_pem_file %{_sysconfdir}/pki/%{name}/%{name}.pem
 
@@ -73,6 +73,13 @@ Patch14: cyrus-imapd-2.3.16-idledfix.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=1156663
 # https://access.redhat.com/security/cve/CVE-2014-3566 
 Patch15: cyrus-imapd-2.3.16-tlsconfig.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=885620
+# https://bugzilla.cyrusimap.org/show_bug.cgi?id=3754
+Patch16: cyrus-imapd-2.3.16-rh885620.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=963072
+Patch17: cyrus-imapd-2.3.16-rh963072.patch
 
 BuildRoot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
@@ -159,6 +166,8 @@ one running the server.
 %patch13 -p1 -b .CVE-2011-3481
 %patch14 -p1 -b .idledfix
 %patch15 -p1
+%patch16 -p1
+%patch17 -p1
 
 install -m 644 %{SOURCE4} %{SOURCE5} %{SOURCE11} doc/
 
@@ -500,6 +509,14 @@ fi
 %{_mandir}/man1/*
 
 %changelog
+* Thu Oct 13 2016 Pavel Šimerda <psimerda@redhat.com> - 2.3.16-15
+- Resolves: #963072 - imapd never close the connect to the client upon the idle
+  timeout
+
+* Thu Oct 13 2016 Pavel Šimerda <psimerda@redhat.com> - 2.3.16-14
+- Resolves: #885620 - imapd segfaults while stripping attachment using Horde
+  4/IMP 5 application
+
 * Fri Feb 13 2015 Pavel Šimerda <psimerda@redhat.com> - 2.3.16-13
 - Resolves: #1156663 - remove unnecessary options
 
