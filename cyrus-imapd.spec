@@ -1,6 +1,6 @@
 Name: cyrus-imapd
 Version: 2.3.16
-Release: 6%{?dist}.4
+Release: 6%{?dist}.5
 
 %define ssl_pem_file %{_sysconfdir}/pki/%{name}/%{name}.pem
 
@@ -68,6 +68,7 @@ Patch12: cyrus-imapd-2.3.7-CVE-2011-3372.patch
 
 # fix CVE-2011-3481, null pointer deref. via crafted Reference header, rhbz#741700
 Patch13: cyrus-imapd-2.3.7-CVE-2011-3481.patch
+Patch14: cyrus-imapd-2.3.16-idledfix.patch
 
 BuildRoot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
@@ -152,6 +153,7 @@ one running the server.
 %patch11 -p1 -b .bufoverflow
 %patch12 -p1 -b .CVE-2011-3372
 %patch13 -p1 -b .CVE-2011-3481
+%patch14 -p1 -b .idledfix
 
 install -m 644 %{SOURCE4} %{SOURCE5} %{SOURCE11} doc/
 
@@ -493,6 +495,9 @@ fi
 %{_mandir}/man1/*
 
 %changelog
+* Thu May 03 2012 Michal Hlavinka <mhlavink@redhat.com> - 2.3.16-6.5
+- fix deadlock in idled code (#818209)
+
 * Fri Sep 30 2011 Michal Hlavinka <mhlavink@redhat.com> - 2.3.16-6.4
 - fix CVE-2011-3481: NULL pointer dereference via crafted 
   References header in email (#738391)
