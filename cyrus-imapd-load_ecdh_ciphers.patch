@@ -1,0 +1,14 @@
+diff --git a/imap/tls.c b/imap/tls.c
+index fcc8ab6..4c83c83 100644
+--- a/imap/tls.c
++++ b/imap/tls.c
+@@ -775,7 +775,8 @@ int     tls_init_serverengine(const char *ident,
+ #if (OPENSSL_VERSION_NUMBER >= 0x0090800fL)
+     /* Load DH params for DHE-* key exchanges */
+     SSL_CTX_set_tmp_dh(s_ctx, load_dh_param(s_key_file, s_cert_file));
+-    /* FIXME: Load ECDH params for ECDHE suites when 0.9.9 is released */
++    /* Enable ECDH ciphers */
++    SSL_CTX_set_ecdh_auto(s_ctx,1);
+ #endif
+ 
+     verify_depth = verifydepth;

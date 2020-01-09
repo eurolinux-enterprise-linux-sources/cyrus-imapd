@@ -1,6 +1,6 @@
 Name: cyrus-imapd
 Version: 2.4.17
-Release: 13%{?dist}
+Release: 15%{?dist}
 
 %define ssl_pem_file %{_sysconfdir}/pki/%{name}/%{name}.pem
 
@@ -48,6 +48,12 @@ Patch9: cyrus-imapd-2.3.16-tlsconfig.patch
 Patch10: cyrus-imapd-2.4.17-no-mupdate-port.patch
 ## https://bugzilla.redhat.com/show_bug.cgi?id=1449501
 Patch11: cyrus-imapd-2.4.17-free_body_leak.patch
+
+## https://bugzilla.redhat.com/show_bug.cgi?id=1569941
+Patch12: cyrus-imapd-load_ecdh_ciphers.patch
+
+## https://bugzilla.redhat.com/1508363
+Patch13: cyrus-imapd-password_option.patch
 
 BuildRoot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
@@ -131,6 +137,8 @@ one running the server.
 # %patch10 -p1
 
 %patch11 -p1
+%patch12 -p1
+%patch13 -p1 -b .pwd-option
 
 install -m 644 %{SOURCE11} doc/
 
@@ -471,6 +479,12 @@ done
 %{_mandir}/man1/*
 
 %changelog
+* Thu Jan 10 2019 Pavel Zhukov <pzhukov@redhat.com> - 2.4.17-15
+- Resolves: #1508363 - Add -w (password) option to manpages
+
+* Thu Dec 13 2018 Pavel Zhukov <pzhukov@redhat.com> - 2.4.17-14
+- Resolves: #1569941 - Load echd ciphers
+
 * Wed May 10 2017 Pavel Zhukov <pzhukov@redhat.com> - 2.4.17-13
 - Resolves: #1449501 - Fix memory leak in cmd_append
 
