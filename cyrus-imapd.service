@@ -1,8 +1,6 @@
 [Unit]
 Description=Cyrus-imapd IMAP/POP3 email server
 After=local-fs.target network.target
-After=cyrus-imapd-keygen.service
-Wants=cyrus-imapd-keygen.service
 
 [Service]
 Type=simple

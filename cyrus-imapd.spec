@@ -1,6 +1,6 @@
 Name: cyrus-imapd
 Version: 2.4.17
-Release: 15%{?dist}
+Release: 7%{?dist}
 
 %define ssl_pem_file %{_sysconfdir}/pki/%{name}/%{name}.pem
 
@@ -29,8 +29,6 @@ Source11: README.rpm
 #systemd support
 Source12: cyrus-imapd.service
 Source13: cyr_systemd_helper
-Source14: cyrus-imapd-keygen.service
-Source15: cyrus-imapd-keygen.sh
 
 Patch3: http://www.oakton.edu/~jwade/cyrus/cyrus-imapd-2.1.3/cyrus-imapd-2.1.3-flock.patch
 
@@ -41,19 +39,6 @@ Patch6: cyrus-imapd-2.3.12p2-current-db.patch
 
 # for c-i <= 2.4.12
 Patch8: cyrus-imapd-2.4.12-debugopt.patch
-# https://bugzilla.redhat.com/show_bug.cgi?id=1196210
-# https://access.redhat.com/security/cve/CVE-2014-3566
-Patch9: cyrus-imapd-2.3.16-tlsconfig.patch
-# https://bugzilla.redhat.com/show_bug.cgi?id=504813
-Patch10: cyrus-imapd-2.4.17-no-mupdate-port.patch
-## https://bugzilla.redhat.com/show_bug.cgi?id=1449501
-Patch11: cyrus-imapd-2.4.17-free_body_leak.patch
-
-## https://bugzilla.redhat.com/show_bug.cgi?id=1569941
-Patch12: cyrus-imapd-load_ecdh_ciphers.patch
-
-## https://bugzilla.redhat.com/1508363
-Patch13: cyrus-imapd-password_option.patch
 
 BuildRoot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
@@ -132,13 +117,6 @@ one running the server.
 %patch4 -p1 -b .authid_normalize
 %patch6 -p1 -b .libdb
 %patch8 -p1 -b .debugopt
-%patch9 -p1
-# We are skipping Patch10 so that we can apply it later in the process.
-# %patch10 -p1
-
-%patch11 -p1
-%patch12 -p1
-%patch13 -p1 -b .pwd-option
 
 install -m 644 %{SOURCE11} doc/
 
@@ -198,9 +176,6 @@ make -C doc -f Makefile.dist
 make LDFLAGS="$LDFLAGS -pie %{__global_ldflags}"
 make -C notifyd notifytest
 
-# Now that the docs have been fully generated, patch it
-patch -p1 < %PATCH10
-
 %install
 rm -rf %{buildroot}
 
@@ -254,8 +229,6 @@ install -p -m 755 %{SOURCE10}   %{buildroot}%{_sysconfdir}/cron.daily/%{name}
 
 install -p -D -m 644 %{SOURCE12}   %{buildroot}%{_unitdir}/cyrus-imapd.service
 install -p -D -m 755 %{SOURCE13}   %{buildroot}%{_cyrexecdir}/cyr_systemd_helper
-install -p -D -m 644 %{SOURCE14}   %{buildroot}%{_unitdir}/cyrus-imapd-keygen.service
-install -p -D -m 755 %{SOURCE15}   %{buildroot}%{_libexecdir}/cyrus-imapd-keygen.sh
 
 # Cleanup of doc dir
 find doc perl -name CVS -type d -prune -exec rm -rf {} \;
@@ -329,16 +302,34 @@ do
   fi
 done
 
+# Create SSL certificates
+exec > /dev/null 2> /dev/null
+
+if [ ! -f %{ssl_pem_file} ]; then
+pushd %{_sysconfdir}/pki/tls/certs
+umask 077
+cat << EOF | make %{name}.pem
+--
+SomeState
+SomeCity
+SomeOrganization
+SomeOrganizationalUnit
+localhost.localdomain
+root@localhost.localdomain
+EOF
+chown root.%{_cyrusgroup} %{name}.pem
+chmod 640 %{name}.pem
+mv %{name}.pem %{ssl_pem_file}
+popd
+fi
+
 %systemd_post cyrus-imapd.service
-%systemd_post cyrus-imapd-keygen.service
 
 %preun
 %systemd_preun cyrus-imapd.service
-%systemd_preun cyrus-imapd-keygen.service
 
 %postun
 %systemd_postun_with_restart cyrus-imapd.service
-%systemd_postun_with_restart cyrus-imapd-keygen.service
 
 %files
 %defattr(-,root,root,-)
@@ -357,8 +348,6 @@ done
 %config(noreplace) %{_sysconfdir}/pam.d/nntp
 %{_sysconfdir}/cron.daily/%{name}
 %{_unitdir}/cyrus-imapd.service
-%{_unitdir}/cyrus-imapd-keygen.service
-%{_libexecdir}/cyrus-imapd-keygen.sh
 %dir %{_cyrexecdir}
 %{_cyrexecdir}/cyr_systemd_helper
 %{_cyrexecdir}/arbitron
@@ -479,31 +468,6 @@ done
 %{_mandir}/man1/*
 
 %changelog
-* Thu Jan 10 2019 Pavel Zhukov <pzhukov@redhat.com> - 2.4.17-15
-- Resolves: #1508363 - Add -w (password) option to manpages
-
-* Thu Dec 13 2018 Pavel Zhukov <pzhukov@redhat.com> - 2.4.17-14
-- Resolves: #1569941 - Load echd ciphers
-
-* Wed May 10 2017 Pavel Zhukov <pzhukov@redhat.com> - 2.4.17-13
-- Resolves: #1449501 - Fix memory leak in cmd_append
-
-* Thu Mar 02 2017 Pavel Šimerda <psimerda@redhat.com> - 2.4.17-12
-- Resolves: #504813 - postpone the patch until the manpage is fully built
-
-* Thu Mar 02 2017 Pavel Šimerda <psimerda@redhat.com> - 2.4.17-11
-- Resolves: #504813 - manpage change: remove unimplemented mupdate_port from
-  cyrus-imapd
-
-* Thu Feb 09 2017 Pavel Šimerda <psimerda@redhat.com> - 2.4.17-10
-- Related: #1346059 - handle the new service file in scriptlets
-
-* Thu Feb 09 2017 Pavel Šimerda <psimerda@redhat.com> - 2.4.17-9
-- Resolves: #1346059 - build certificate at run time, not at install time
-
-* Thu Mar 19 2015 Pavel Šimerda <psimerda@redhat.com> - 2.4.17-8
-- Resolves: #1196210 - backport method to disable SSLv3
-
 * Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 2.4.17-7
 - Mass rebuild 2014-01-24
 

@@ -1,8 +1,0 @@
-[Unit]
-Description=cyrus-imapd Certificate Generator
-ConditionPathExists=!/etc/pki/cyrus-imapd/cyrus-imapd.pem
-
-[Service]
-Type=oneshot
-ExecStart=/usr/libexec/cyrus-imapd-keygen.sh
-RemainAfterExit=yes
