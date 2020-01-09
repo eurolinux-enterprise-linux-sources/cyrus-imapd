@@ -1,6 +1,6 @@
 Name: cyrus-imapd
 Version: 2.3.16
-Release: 6%{?dist}.3
+Release: 6%{?dist}.4
 
 %define ssl_pem_file %{_sysconfdir}/pki/%{name}/%{name}.pem
 
@@ -62,6 +62,12 @@ Patch10: cyrus-imapd-2.3-starttls.patch
 
 # fix for CVE-2011-3208 nntpd buffer overflow, rhbz#735391
 Patch11: cyrus-imapd-2.3.16-bufoverflow.patch
+
+# fix CVE-2011-3372, nntpd authentication bypass, rhbz#741700
+Patch12: cyrus-imapd-2.3.7-CVE-2011-3372.patch
+
+# fix CVE-2011-3481, null pointer deref. via crafted Reference header, rhbz#741700
+Patch13: cyrus-imapd-2.3.7-CVE-2011-3481.patch
 
 BuildRoot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
@@ -144,6 +150,8 @@ one running the server.
 %patch9 -p1 -b .fixmanpage
 %patch10 -p1 -b .starttls
 %patch11 -p1 -b .bufoverflow
+%patch12 -p1 -b .CVE-2011-3372
+%patch13 -p1 -b .CVE-2011-3481
 
 install -m 644 %{SOURCE4} %{SOURCE5} %{SOURCE11} doc/
 
@@ -485,6 +493,11 @@ fi
 %{_mandir}/man1/*
 
 %changelog
+* Fri Sep 30 2011 Michal Hlavinka <mhlavink@redhat.com> - 2.3.16-6.4
+- fix CVE-2011-3481: NULL pointer dereference via crafted 
+  References header in email (#738391)
+- fix CVE-2011-3372: nntpd authentication bypass (#740822)
+
 * Tue Sep 06 2011 Jiri Skala <jskala@redhat.com> - 2.3.16-6.3
 - Resolves: #735391 - CVE-2011-3208 nntpd buffer overflow
 
