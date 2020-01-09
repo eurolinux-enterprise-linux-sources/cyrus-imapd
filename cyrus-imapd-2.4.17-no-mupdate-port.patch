@@ -1,0 +1,25 @@
+--- ./doc/man/imapd.conf.5.html.orig	2017-03-02 12:35:16.049738613 +0100
++++ ./doc/man/imapd.conf.5.html	2017-03-02 12:36:22.329737530 +0100
+@@ -1165,11 +1165,6 @@
+ <p style="margin-left:18%;">The SASL password (if needed)
+ to use when authenticating to the mupdate server.</p>
+ 
+-<p style="margin-left:11%;"><b>mupdate_port:</b> 3905</p>
+-
+-<p style="margin-left:18%;">The port of the mupdate server
+-for the Cyrus Murder</p>
+-
+ <p style="margin-left:11%;"><b>mupdate_realm:</b>
+ &lt;none&gt;</p>
+ 
+--- ./man/imapd.conf.5.orig	2017-03-02 12:35:16.049738613 +0100
++++ ./man/imapd.conf.5	2017-03-02 12:36:22.329737530 +0100
+@@ -628,8 +628,6 @@
+ .IP "\fBmupdate_password:\fR <none>" 5
+ The SASL password (if needed) to use when authenticating to the
+ mupdate server. 
+-.IP "\fBmupdate_port:\fR 3905" 5
+-The port of the mupdate server for the Cyrus Murder 
+ .IP "\fBmupdate_realm:\fR <none>" 5
+ The SASL realm (if needed) to use when authenticating to the mupdate
+ server. 
