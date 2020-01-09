@@ -1,0 +1,13 @@
+/.cvsignore/1.3/Tue Mar  9 18:05:40 2004//
+/Makefile.in/1.30/Mon Mar 24 18:34:22 2008//
+/README/1.5/Wed Oct 22 18:50:29 2003//
+/afskrb.c/1.18/Mon Oct 12 14:13:42 2009//
+/ldap.c/1.16/Tue Mar 31 04:11:23 2009//
+/ptdump.c/1.15/Mon Mar 24 18:34:22 2008//
+/ptexpire.c/1.22/Mon Mar 24 18:34:22 2008//
+/ptextract.c/1.5/Mon Mar 24 18:34:22 2008//
+/ptloader.c/1.49/Thu Sep  4 20:44:08 2008//
+/ptloader.h/1.3/Mon Mar 24 18:34:22 2008//
+/test.c/1.7/Mon Mar 24 18:34:22 2008//
+/test2.c/1.7/Mon Mar 24 18:34:22 2008//
+D

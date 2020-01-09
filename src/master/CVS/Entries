@@ -1,0 +1,14 @@
+/.cvsignore/1.2/Wed Oct 22 18:03:09 2003//
+/CYRUS-MASTER.mib/1.4/Tue Aug 14 16:11:26 2001//
+/Makefile.in/1.24/Mon Mar 24 17:47:41 2008//
+/README/1.9/Wed Oct 22 18:03:09 2003//
+/cyrusMasterMIB.c/1.13/Thu Nov 30 17:11:23 2006//
+/cyrusMasterMIB.h/1.1/Sun Nov  5 22:11:28 2000//
+/master.c/1.115/Thu Sep 24 14:41:06 2009//
+/master.h/1.15/Mon Sep 24 12:48:32 2007//
+/masterconf.c/1.15/Tue Mar 31 04:11:23 2009//
+/masterconf.h/1.7/Mon Mar 24 17:47:41 2008//
+/service-thread.c/1.21/Mon Mar 24 17:47:41 2008//
+/service.c/1.59/Mon Mar 24 17:47:41 2008//
+/service.h/1.18/Tue Apr 15 18:06:30 2008//
+D

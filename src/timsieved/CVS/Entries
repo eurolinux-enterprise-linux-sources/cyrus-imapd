@@ -1,0 +1,17 @@
+/.cvsignore/1.2/Wed Oct 22 18:03:46 2003//
+/Makefile.in/1.28/Mon Mar 24 20:20:57 2008//
+/TODO/1.5/Fri Aug  1 13:22:25 2003//
+/actions.c/1.47/Tue Sep 22 01:47:11 2009//
+/actions.h/1.13/Wed Jan 14 15:50:47 2009//
+/codes.h/1.7/Mon Mar 24 20:20:57 2008//
+/exitcodes.h/1.5/Mon Mar 24 20:20:57 2008//
+/lex.c/1.29/Tue Mar 31 04:11:24 2009//
+/lex.h/1.12/Mon Mar 24 20:20:57 2008//
+/mystring.c/1.8/Thu Nov 30 17:11:25 2006//
+/mystring.h/1.7/Mon Mar 24 20:20:57 2008//
+/parser.c/1.54/Thu Apr 23 17:10:07 2009//
+/parser.h/1.5/Mon Mar 24 20:20:57 2008//
+/scripttest.c/1.25/Mon Mar 24 20:20:57 2008//
+/scripttest.h/1.11/Mon Mar 24 20:20:57 2008//
+/timsieved.c/1.64/Wed Dec 16 02:51:45 2009//
+D
